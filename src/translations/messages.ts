@@ -4,8 +4,8 @@ export const messages = {
     cs: 'délka musí být >= 10',
   },
   'login.header.h1': {
-    en: 'Login',
-    cs: 'Přihlášení',
+    en: 'Login {{NAME}}',
+    cs: 'Přihlášení {{NAME}}',
   },
   'login.header.h2': {
     en: 'h2 bro',
