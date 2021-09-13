@@ -4,31 +4,29 @@ import { messages } from './messages'
  * Match all variables wrapped with double curly bracket like:
  * {{variableName}}
  */
-const VARIABLE_REGEX = /{{([^{}]*)}}/g
+const VARIABLE_REGEX = /{{(\w+)}}/g
 
 type TranslateArgumentValue = string | null | number | undefined
 
+/**
+ * interpolate takes template and replace variables wrapped in {{VARIABLE_REGEX}}
+ * null and undefined args values are resolved as empty empty string
+ */
 export const interpolate = (str: string, data: Record<string, TranslateArgumentValue>) =>
-  str.replace(
-    VARIABLE_REGEX,
-    // @ts-expect-error
-    (_match: string, content: string) =>
-      // null and undefined values are resolved as empty object
-      data[content] ?? ''
-  )
+  str.replace(VARIABLE_REGEX, (_match, content: string) => data[content]?.toString() ?? '')
 
 type GetAllEvenItems<T> = T extends [infer _A, infer B, ...infer Rest]
   ? [B, ...GetAllEvenItems<Rest>]
   : []
 
-type ParseTemplate<T> = T extends `${infer PreText}{{${infer MsgVariable}}}${infer PostText}`
-  ? [PreText, MsgVariable, ...ParseTemplate<PostText>]
-  : [T]
+type ParseTranslateTemplate<T extends string> =
+  T extends `${infer PreText}{{${infer MsgVariable}}}${infer PostText}`
+    ? [PreText, MsgVariable, ...ParseTranslateTemplate<PostText>]
+    : [T]
 
-type ParseTemplateArgs<
-  T,
-  ParsedTemplate = ParseTemplate<T>,
-  // @ts-expect-error
+type ParseTranslationTemplateArgs<
+  T extends string,
+  ParsedTemplate extends string[] = ParseTranslateTemplate<T>,
   ParsedArgs extends string[] = GetAllEvenItems<ParsedTemplate>,
   ArgsObject = Record<ParsedArgs[number], TranslateArgumentValue>
 > = ArgsObject
@@ -49,12 +47,14 @@ const LANG = DEFAULT_LANGUAGE
  */
 export const translate = <ID extends keyof typeof messages>(
   id: ID,
-  data?: ParseTemplateArgs<typeof messages[ID][LanguageOptions]>
+  data?: ParseTranslationTemplateArgs<typeof messages[ID][LanguageOptions]>
 ) => {
   const message = messages[id][LANG]
   if (!message) throw new Error(`message ${id} is not implemented for language ${LANG}`)
-  // @ts-expect-error
-  return interpolate(message, data) as typeof messages[ID][LanguageOptions]
+  return interpolate(
+    message,
+    data as Record<string, TranslateArgumentValue>
+  ) as typeof messages[ID][LanguageOptions]
 }
 
 // runtime-time validations of messages consistency
