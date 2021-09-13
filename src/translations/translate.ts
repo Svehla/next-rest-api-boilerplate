@@ -1,5 +1,8 @@
 import { messages } from './messages'
 
+// There is POC for compile time template replacing for better editor hover hints
+// > https://gist.github.com/Svehla/49959b9b996927ac6524c5ab5a81dba2
+
 /**
  * Match all variables wrapped with double curly bracket like:
  * {{variableName}}
