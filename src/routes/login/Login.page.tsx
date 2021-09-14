@@ -11,7 +11,7 @@ export const _Login = () => {
   return (
     <Container>
       <h1>{translate('login.header.h1', { NAME: 'My app' })}</h1>
-      <h2>{translate('login.header.h2')}</h2>
+      <h2>{translate('login.header.h2', { TEXT: 'xd' })}</h2>
 
       {data.error && <Alert severity='error'>{data.error}</Alert>}
 

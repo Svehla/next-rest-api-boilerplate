@@ -4,12 +4,12 @@ export const messages = {
     cs: 'délka musí být >= 10',
   },
   'login.header.h1': {
-    en: 'Login {{NAME}}',
-    cs: 'Přihlášení {{NAME}}',
+    en: 'Hello {{NAME}}!',
+    cs: 'Ahoj {{NAME}}!',
   },
   'login.header.h2': {
-    en: 'h2 bro',
-    cs: 'h2 bráško',
+    en: 'h2 bro {{TEXT}}',
+    cs: 'h2 kámo {{TEXT}}',
   },
   'login.input.username.label': {
     en: 'username',
