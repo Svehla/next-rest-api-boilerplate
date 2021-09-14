@@ -120,4 +120,4 @@ type CheckMessages<T extends Record<string, { en: string; cs: string }>> = T
 type ____ = CheckMessages<typeof messages>
 
 // test
-const a = translate('login.header.h1', { NAME: 'Kuba' } as const)
+const a = translate('login.header.h1', { NAME: 'My name!!!' } as const)
